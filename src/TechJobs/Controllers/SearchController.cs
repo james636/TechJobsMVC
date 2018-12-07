@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TechJobs.Models;
 
@@ -15,21 +15,27 @@ namespace TechJobs.Controllers
 
         // TODO #1 - Create a Results action method to process 
         // search request and display results
-        public IActionResult Results(string searchTerm, string searchType)
+        public IActionResult Results(string searchType, string searchTerm)
         {
+            ViewBag.columns = ListController.columnChoices;
 
-            if (searchType == "all")
+            List<Dictionary<string, string>> jobs;
+            if (searchType.Equals("all"))
             {
-                ViewBag.Jobs = JobData.FindByValue(searchTerm);
+                jobs = JobData.FindByValue(searchTerm);
+
+
             }
             else
             {
-                ViewBag.Jobs = JobData.FindByColumnAndValue(searchType, searchTerm);
+                jobs = JobData.FindByColumnAndValue(searchType, searchTerm);
             }
-            ViewBag.columns = ListController.columnChoices;
-            ViewBag.Title = "Search";
+
+            ViewBag.jobs = jobs;
+
 
             return View("Index");
+
         }
     }
 }
